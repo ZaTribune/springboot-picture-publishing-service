@@ -1,0 +1,25 @@
+<div xmlns:th="http://www.thymeleaf.org"
+     th:fragment="MainProductsFragment" class="row">
+    <div class="col-4">
+        <div class="list-group" id="list-tab" role="tablist">
+            <a class="list-group-item list-group-item-action" th:id="'pic-item-'+${product.id}" data-bs-toggle="list"
+               th:each="product, stat : ${mainProducts}" th:href="'#pic-content-'+${product.id}" role="tab"
+               th:text="${product.getPath()}"></a>
+        </div>
+    </div>
+    <div class="col-8">
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade" th:each="product, stat : ${mainProducts}"
+                 th:id="'pic-content-'+${product.id}" role="tabpanel"
+                 th:text="${product.description}"></div>
+
+        </div>
+    </div>
+    <script>
+
+        let triggerEl = document.querySelector('#list-tab a:first-child')
+        triggerEl.classList.add("active");
+        let firstContent = document.querySelector('#nav-tabContent div:first-child')
+        firstContent.classList.add("show","active");
+    </script>
+</div>
