@@ -22,11 +22,11 @@ public class ImageMapper {
         try {
 //            System.out.println(new File(System.getProperty("user.dir")
 //                    +PropertiesExtractor.FILE_SERVER_PATH
-//                    + product));
+//                    +"/"+product));
             BufferedImage bImage = ImageIO.read(
                     new File(System.getProperty("user.dir")
-                            +PropertiesExtractor.FILE_SERVER_PATH
-                            + product));
+                            + PropertiesExtractor.FILE_SERVER_PATH
+                            + "/"+product));
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ImageIO.write(bImage, "png", bos);

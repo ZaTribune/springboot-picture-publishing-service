@@ -66,9 +66,9 @@ public class MainController {
         if (securityContext.getAuthentication()!=null)
         log.info("{}:{}",getClass().getSimpleName(),securityContext.getAuthentication().toString());
 
-        model.addAttribute("mainProducts",list);
+        model.addAttribute("pics",list);
         if (logout){
-            model.addAttribute("logout", logout);
+            model.addAttribute("logout", true);
         }
         logout =false;
         return "index";
@@ -80,7 +80,7 @@ public class MainController {
         List<Pic>list=picService.getAll();
         log.info("{}:{}",getClass().getSimpleName(),list.size());
 
-        model.addAttribute("mainProducts",list);
+        model.addAttribute("pics",list);
         return "/home/mainProducts";
     }
     @GetMapping("/product/image/{id}")

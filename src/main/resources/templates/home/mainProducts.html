@@ -2,16 +2,30 @@
      th:fragment="MainProductsFragment" class="row">
     <div class="col-4">
         <div class="list-group" id="list-tab" role="tablist">
-            <a class="list-group-item list-group-item-action" th:id="'pic-item-'+${product.id}" data-bs-toggle="list"
-               th:each="product, stat : ${mainProducts}" th:href="'#pic-content-'+${product.id}" role="tab"
-               th:text="${product.getPath()}"></a>
+            <a class="list-group-item list-group-item-action" th:id="'pic-item-'+${pic.id}" data-bs-toggle="list"
+               th:each="pic, stat : ${pics}" th:href="'#pic-content-'+${pic.id}" role="tab"
+               th:text="${pic.path}"></a>
         </div>
     </div>
     <div class="col-8">
         <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade" th:each="product, stat : ${mainProducts}"
-                 th:id="'pic-content-'+${product.id}" role="tabpanel"
-                 th:text="${product.description}"></div>
+            <div class="tab-pane fade" th:each="pic, stat : ${pics}"
+                 th:id="'pic-content-'+${pic.id}" role="tabpanel">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 th:text="${pic.path}"></h5>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="text-center mb-2">
+                            <img th:src="@{'product/image/' +${pic.id}}" alt="Card image cap"
+                                 class="" th:height="300">
+                        </div>
+                        <label class="d-block mb-1"><b>Description:</b><span th:text="' '+${pic.description}"></span></label>
+                        <label class="d-block mb-1"><b>Category:</b><span th:text="' '+${pic.category}"></span></label>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>
