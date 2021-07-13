@@ -67,6 +67,4 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         user.setCredentialsNonExpired(false);
         userRepository.save(user);
     }
-
-
 }

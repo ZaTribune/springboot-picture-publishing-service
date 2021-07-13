@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="/fragments/heads"></head>
+<body>
+<div class="container col-sm-10 col-md-4 col-lg-3">
+    <form th:action="@{/registration}" th:object="${user}" method="post">
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                   th:field="*{username}">
+            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" th:field="*{password}">
+        </div>
+        <div class="mb-3">
+            <label for="confirmPassword" class="form-label">Confirm Password</label>
+            <input type="password" class="form-control" id="confirmPassword" th:field="*{passwordConfirm}">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<footer th:replace="fragments/footer"></footer>
+</body>
+</html>

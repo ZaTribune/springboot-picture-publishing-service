@@ -1,0 +1,52 @@
+<div xmlns:th="http://www.thymeleaf.org"
+     class="container my-3">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <h2>Employee Registration</h2>
+            <form th:action="@{/save}" th:object="${user}" method="post">
+                <div class="form-row">
+                    <div class="col-md-6 form-group">
+                        <label>Name</label>
+                        <input type="text" class="form-control" th:field="*{username}">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Department</label>
+                        <select class="form-control" th:field="*{dept}">
+                            <option value="">Choose...</option>
+                            <option value="IT">IT</option>
+                            <option value="HR">HR</option>
+                            <option value="Sale">Sale</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Age</label>
+                        <input type="number" step="any" class="form-control" th:field="*{age}">
+                    </div>
+
+                    <div class="col-md-6 form-group">
+                        <strong>Gender</strong>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" th:field="*{gender}" id="option1" value="Male">
+                            <label class="form-check-label" for="option1">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" th:field="*{gender}" id="option2" value="Female">
+                            <label class="form-check-label" for="option2">Female</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-group">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Joining Date</label>
+                        <input type="text" class="form-control" placeholder="yyyy-MM-dd" id="join_datepicker" th:field="*{joiningDate}">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Retiring Date</label>
+                        <input type="text" class="form-control" placeholder="yyyy-MM-dd" id="retire_datepicker" th:field="*{retiringDate}">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block mt-3">Save</button>
+            </form>
+        </div>
+    </div>
+</div>
