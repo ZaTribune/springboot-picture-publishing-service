@@ -48,10 +48,10 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
         log.info("initData()");
 
         Role roleAdmin = new Role();
-        roleAdmin.setName("ADMIN");
+        roleAdmin.setName("ROLE_ADMIN");
 
         Role roleUser = new Role();
-        roleAdmin.setName("USER");
+        roleUser.setName("ROLE_USER");
 
         Pic pic1 = new Pic();
         pic1.setCategory(Category.living_thing);
@@ -79,18 +79,14 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
         admin.setPassword("{pbkdf2.2018}1f1fab5f4176f86513f10136f70d4984ef97860490176f501843bb503489");//admin123
         admin.setRoles(Set.of(roleAdmin));//user123
         admin.setAccountNonExpired(true);
-
         admin.setAccountNonLocked(true);
-
         admin.setCredentialsNonExpired(true);
-
         admin.setEnabled(true);
 
         User user = new User();
         user.setUsername("muhammad.ali@pps.com");//user123
         user.setPassword("{pbkdf2.2018}5905ba87b762cad9626cbaa59777af0ef3a8bd5fdb08a4b0974cf8f5bb8f");
         user.setRoles(Set.of(roleUser));
-
         pic1.setUser(user);
         pic2.setUser(user);
         pic3.setUser(user);

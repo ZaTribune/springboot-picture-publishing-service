@@ -57,9 +57,6 @@ public class MainController {
         log.info("{}:{}",getClass().getSimpleName(),"/index");
         model.addAttribute("hello_message","Welcome to our website!");
         List<Pic>list=picService.getAll();
-        System.out.println("XXX size"+list.size());
-
-        System.out.println("XXX "+ logout);
 
         SecurityContext securityContext= SecurityContextHolder.getContext();
 
@@ -74,16 +71,16 @@ public class MainController {
         return "index";
     }
 
-    @RequestMapping(value = "/mainProducts")
-    public String getMAinProductsFragment(Model model){
-        log.info("{}:{}",getClass().getSimpleName(),"/mainProducts");
+    @RequestMapping(value = "/pics")
+    public String getPicsFragment(Model model){
+        log.info("{}:{}",getClass().getSimpleName(),"/pics");
         List<Pic>list=picService.getAll();
         log.info("{}:{}",getClass().getSimpleName(),list.size());
 
         model.addAttribute("pics",list);
-        return "/home/mainProducts";
+        return "/home/pics";
     }
-    @GetMapping("/product/image/{id}")
+    @GetMapping("/pic/image/{id}")
     public void showProductImage(@PathVariable Long id, HttpServletResponse response)
             throws IOException, NotFoundException {
         response.setContentType("image/jpeg"); // Or whatever format you wanna use
