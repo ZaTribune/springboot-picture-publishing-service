@@ -6,6 +6,7 @@ import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -82,6 +83,9 @@ public class PicController {
         imageMapper.saveFile(PropertiesExtractor.FILE_SERVER_PATH, fileName, multipartFile);
         pic.setStatus(PicStatus.PENDING);
         pic.setPath(fileName);
+        User user= (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        pic.setUser(user);
+
         picService.save(pic);
         return new RedirectView("/index", true);//return to home page
     }
