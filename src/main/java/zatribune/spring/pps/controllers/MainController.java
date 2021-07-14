@@ -8,16 +8,22 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.view.RedirectView;
 import zatribune.spring.pps.DTO.UserDTO;
+import zatribune.spring.pps.data.entities.Category;
 import zatribune.spring.pps.data.entities.Pic;
+import zatribune.spring.pps.data.entities.PicStatus;
 import zatribune.spring.pps.data.entities.User;
 import zatribune.spring.pps.exceptions.NotFoundException;
 import zatribune.spring.pps.services.PicService;
 import zatribune.spring.pps.services.SecurityService;
 import zatribune.spring.pps.utils.ImageMapper;
+import zatribune.spring.pps.utils.PropertiesExtractor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -64,7 +70,10 @@ public class MainController {
         if (securityContext.getAuthentication()!=null)
         log.info("{}:{}",getClass().getSimpleName(),securityContext.getAuthentication().toString());
 
+        model.addAttribute(new Pic());//case user choose to upload a pic
         model.addAttribute("pics",list);
+        model.addAttribute("categories", Category.values());
+
         if (logout){
             model.addAttribute("logout", true);
         }
@@ -78,8 +87,28 @@ public class MainController {
         List<Pic>list=picService.getAll();
         log.info("{}:{}",getClass().getSimpleName(),list.size());
 
+        model.addAttribute(new Pic());//case user choose to upload a pic
         model.addAttribute("pics",list);
+        model.addAttribute("categories", Category.values());
+
         return "/home/pics";
+    }
+
+    @PostMapping(value = "/pics/add")
+    public RedirectView addPic(@ModelAttribute("pic")@Valid Pic pic, @RequestParam("image") MultipartFile multipartFile, Model model) throws IOException {
+        log.info("{}:{}",getClass().getSimpleName(),"/pics/add");
+        String fileName=null;
+        if (multipartFile.getOriginalFilename()!=null) {
+            fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            log.info("{}:{}", getClass().getSimpleName(), fileName);
+        }
+        //todo: your picture will be reviewed by our admins before being approved ,stay toned.
+
+        imageMapper.saveFile(PropertiesExtractor.FILE_SERVER_PATH, fileName, multipartFile);
+        pic.setStatus(PicStatus.BENDING);
+        pic.setPath(fileName);
+        picService.save(pic);
+        return new RedirectView("/index", true);//return to home page
     }
 
     @GetMapping("/pic/image/{id}")
@@ -89,8 +118,7 @@ public class MainController {
 
         Pic product = picService.getById(id).orElseThrow(()->new NotFoundException(id));
 
-        InputStream is =
-                new ByteArrayInputStream(imageMapper.getImageUnWrapped(product.getPath()));
+        InputStream is = new ByteArrayInputStream(imageMapper.getImageUnWrapped(product.getPath()));
         IOUtils.copy(is, response.getOutputStream());
     }
 

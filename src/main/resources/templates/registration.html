@@ -1,15 +1,29 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-
+<style>
+    .centered{
+        position: relative;top: 50%;left: 50%;transform: translate(-50%, -50%);
+    }
+</style>
 <head th:replace="/fragments/heads"></head>
-<body>
-<div class="container col-sm-10 col-md-4 col-lg-3">
-    <form th:action="@{/registration}" th:object="${user}" method="post">
+<body style="height: 100vh">
+
+<header class="bg-dark" style="height: 25vh">
+    <img  th:src="@{/images/spring.svg}" height="150px"
+          alt="logo" class="centered" >
+</header>
+
+<div class="container col-sm-10 col-md-4 col-lg-3" style="height: 50vh">
+    <form th:action="@{/registration}" th:object="${user}" method="post" class="centered">
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Email address</label>
             <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
                    th:field="*{username}">
-            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            <div class="invalid-feedback d-inline-block" th:if="${#fields.hasErrors('username')}">
+                <ul class="m-0">
+                    <li th:each="err:${#fields.errors('username')}" th:text="${err}"></li>
+                </ul>
+            </div>
         </div>
         <div class="mb-3">
             <label for="password" class="form-label">Password</label>
@@ -18,12 +32,21 @@
         <div class="mb-3">
             <label for="confirmPassword" class="form-label">Confirm Password</label>
             <input type="password" class="form-control" id="confirmPassword" th:field="*{passwordConfirm}">
+            <div class="invalid-feedback d-inline-block" th:if="${#fields.hasErrors('passwordConfirm')}">
+                <ul class="m-0">
+                    <li th:each="err:${#fields.errors('passwordConfirm')}" th:text="${err}"></li>
+                </ul>
+            </div>
         </div>
 
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
+<footer class="bg-dark" style="height: 25vh">
+    <div class="container py-4">
+        <p class="text-muted mb-0 py-2 text-center">© 2021 ZaTribune All rights reserved.</p>
+    </div>
+</footer>
 
-<footer th:replace="fragments/footer"></footer>
 </body>
 </html>

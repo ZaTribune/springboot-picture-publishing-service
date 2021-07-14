@@ -19,17 +19,25 @@
           rel="stylesheet"
           crossorigin="anonymous"
           th:href="@{/webjars/font-awesome/5.15.2/css/all.min.css}">
+    <style>
+        .list-group-item{
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
     <script>
-        function getContent(id,url) {
+        function getContent(id, url) {
             $(id).load(url);
-            let navbar=$("#navbarResponsive");
-            if (navbar.hasClass('show')){
+            let navbar = $("#navbarResponsive");
+            if (navbar.hasClass('show')) {
                 $('#btnNavbar').click();
-                navbar.area_expanded=false;
+                navbar.area_expanded = false;
                 navbar.addClass('collapsing');
                 navbar.removeClass('show');
             }
         }
+
         function confirmDialog(modalType, okActionURL, laterFunction) {
             $('#modalOverlay').load('/modal/' + modalType, function () {
                 let myModel = $('#myModal');
@@ -57,6 +65,25 @@
                 })
             });
 
+        }
+
+        function getBase64(input, preview, fileInput) {
+            //gets size in bytes
+            let file=fileInput.files[0]
+            if (file.size / 1024 > 2048) {
+                alert("Max file upload is 2 MB.");
+                fileInput.value='';
+                return;
+            }
+            let reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function () {
+                input.attr('value', reader.result);
+                preview.attr('src', reader.result);
+            };
+            reader.onerror = function (error) {
+                console.log('Error: ', error);
+            };
         }
     </script>
 </head>
