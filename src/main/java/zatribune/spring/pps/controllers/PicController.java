@@ -4,17 +4,14 @@ package zatribune.spring.pps.controllers;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
-import zatribune.spring.pps.data.entities.Category;
+import zatribune.spring.pps.data.entities.PicCategory;
 import zatribune.spring.pps.data.entities.Pic;
 import zatribune.spring.pps.data.entities.PicStatus;
 import zatribune.spring.pps.data.entities.User;
@@ -23,9 +20,7 @@ import zatribune.spring.pps.services.PicService;
 import zatribune.spring.pps.utils.ImageMapper;
 import zatribune.spring.pps.utils.PropertiesExtractor;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -54,7 +49,7 @@ public class PicController {
 
         model.addAttribute(new Pic());//case user choose to upload a pic
         model.addAttribute("pics",list);
-        model.addAttribute("categories", Category.values());
+        model.addAttribute("categories", PicCategory.values());
 
         return "/home/pics";
     }

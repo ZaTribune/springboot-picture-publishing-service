@@ -23,7 +23,7 @@ public class Pic {
     private String description;
 
     @Enumerated(EnumType.STRING)
-    private Category category;
+    private PicCategory category;
 
     private String path;
 

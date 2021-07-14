@@ -3,6 +3,7 @@ package zatribune.spring.pps.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import zatribune.spring.pps.data.entities.Pic;
+import zatribune.spring.pps.data.entities.PicCategory;
 import zatribune.spring.pps.data.entities.PicStatus;
 import zatribune.spring.pps.data.entities.User;
 import zatribune.spring.pps.data.repositories.PicRepository;
@@ -13,14 +14,14 @@ import java.util.Optional;
 
 
 @Service
-public class PicServiceImpl implements PicService{
+public class PicServiceImpl implements PicService {
 
     private final PicRepository repository;
 
 
     @Autowired
-    public PicServiceImpl(PicRepository picRepository){
-        this.repository=picRepository;
+    public PicServiceImpl(PicRepository picRepository) {
+        this.repository = picRepository;
     }
 
     @Override
@@ -29,8 +30,13 @@ public class PicServiceImpl implements PicService{
     }
 
     @Override
-    public List<Pic> getAllByStatus(List<PicStatus>  status) {
+    public List<Pic> getAllByStatus(List<PicStatus> status) {
         return new ArrayList<>(repository.findAllByStatusIn(status));
+    }
+
+    @Override
+    public List<Pic> getAllByCategory(List<PicCategory> categories) {
+        return new ArrayList<>(repository.findAllByCategoryIn(categories));
     }
 
     @Override
@@ -50,6 +56,6 @@ public class PicServiceImpl implements PicService{
 
     @Override
     public void delete(Pic pic) {
-      repository.delete(pic);
+        repository.delete(pic);
     }
 }

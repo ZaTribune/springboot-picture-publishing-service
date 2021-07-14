@@ -12,7 +12,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import zatribune.spring.pps.DTO.UserDTO;
 import zatribune.spring.pps.DTO.UserMapper;
-import zatribune.spring.pps.data.entities.Category;
+import zatribune.spring.pps.data.entities.PicCategory;
 import zatribune.spring.pps.data.entities.Pic;
 import zatribune.spring.pps.data.entities.PicStatus;
 import zatribune.spring.pps.data.entities.User;
@@ -68,7 +68,7 @@ public class MainController {
 
         model.addAttribute(new Pic());//case user choose to upload a pic
         model.addAttribute("pics",list);
-        model.addAttribute("categories", Category.values());
+        model.addAttribute("categories", PicCategory.values());
 
         if (logout){
             model.addAttribute("logout", true);

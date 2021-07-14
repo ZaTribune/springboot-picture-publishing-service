@@ -2,7 +2,7 @@ package zatribune.spring.pps.DTO;
 
 import lombok.Getter;
 import lombok.Setter;
-import zatribune.spring.pps.data.entities.Category;
+import zatribune.spring.pps.data.entities.PicCategory;
 import zatribune.spring.pps.data.entities.User;
 
 @Getter
@@ -15,7 +15,7 @@ public class PicDTO {
 
     private String description;
 
-    private Category category;
+    private PicCategory picCategory;
 
 
 }

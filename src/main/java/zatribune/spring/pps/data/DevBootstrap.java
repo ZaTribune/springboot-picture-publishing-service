@@ -54,33 +54,33 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
         roleUser.setName(RoleEnum.ROLE_USER.name());
 
         Pic pic1 = new Pic();
-        pic1.setCategory(Category.living_thing);
+        pic1.setCategory(PicCategory.living_thing);
         pic1.setPath("cat.png");
         pic1.setStatus(PicStatus.APPROVED);
         pic1.setDescription("Be honest! it's better than a dog.");
         //pic1.setUser(user);
 
         Pic pic2 = new Pic();
-        pic2.setCategory(Category.machine);
+        pic2.setCategory(PicCategory.machine);
         pic2.setPath("f22.png");
         pic2.setStatus(PicStatus.APPROVED);
         pic2.setDescription("King Raptor is here, If you like it ,leave a comment below.\nOps!! no comment section available.");
         //pic2.setUser(user);
 
         Pic pic3 = new Pic();
-        pic3.setCategory(Category.nature);
+        pic3.setCategory(PicCategory.nature);
         pic3.setPath("waterfall.png");
         pic3.setStatus(PicStatus.APPROVED);
         pic3.setDescription("Love is all, a waterfall.\npulls u in, takes u down.\nIt's a sad affair");
 
         Pic pic4 = new Pic();
-        pic4.setCategory(Category.nature);
+        pic4.setCategory(PicCategory.nature);
         pic4.setPath("moon.gif");
         pic4.setStatus(PicStatus.PENDING);
         pic4.setDescription("Reminds u with something?!");
 
         Pic pic5 = new Pic();
-        pic5.setCategory(Category.machine);
+        pic5.setCategory(PicCategory.machine);
         pic5.setPath("megatron.png");
         pic5.setStatus(PicStatus.PENDING);
         pic5.setDescription("I'm megatron.");
