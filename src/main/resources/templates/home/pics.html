@@ -10,6 +10,7 @@
                         <h5 class="modal-title" id="picModalLabel">Upload a pic</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
+                    <input type="hidden" th:field="${pic.user}" th:value="${#authentication.principal}">
                     <div class="modal-body text-center">
                         <div class="col text-center">
                             <input id="picInput" th:name="image" type="file" accept="image/png, image/jpeg, image/gif"
@@ -86,7 +87,7 @@
                             <label class="d-block mb-1"><b>Category:</b><span
                                     th:text="' '+${pic.category}"></span></label>
                             <label class="d-block mb-1"><b>Uploaded by:</b><span
-                                    th:text="' '+${pic.user.username}"></span></label>
+                                    th:text="' '+${pic.user?.username}"></span></label>
                         </div>
                     </div>
                 </div>

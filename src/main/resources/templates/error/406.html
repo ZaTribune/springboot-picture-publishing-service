@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"></head>
+
+<body style="text-align: center;font-family: sans-serif;">
+<div class="text-center" style="text-align: center;display: inline-block;">
+    <img src="/images/oops.svg" style="display: block;margin: auto" width="200px" height="200px" alt="">
+    <!--/*@thymesVar id="exception" type="java.lang.Exception"*/-->
+    <h1 style="display: inline-block;color: crimson;" th:if="${exception!=null}" th:text="${exception.getMessage()}"></h1>
+    <h1 style="display: inline-block;color: crimson;" th:if="${exception==null}" th:text="${'Some Error happened.'}"></h1>
+    <a class="btn btn-info" style="width: fit-content;"  onclick="history.back();"><i class="fa fa-arrow-left mx-1"></i>Back</a>
+
+</div>
+
+</body>
+</html>

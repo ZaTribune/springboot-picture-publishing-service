@@ -9,6 +9,7 @@ import zatribune.spring.pps.data.entities.User;
 @Setter
 public class PicDTO {
 
+    //todo: to replace Pic on requests/responses
 
     private User user;
 
@@ -16,6 +17,5 @@ public class PicDTO {
 
     private Category category;
 
-    private String base64Image;
 
 }
