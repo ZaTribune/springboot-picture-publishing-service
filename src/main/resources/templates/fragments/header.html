@@ -1,11 +1,9 @@
 <header class="bg-dark fixed-top" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark pt-0 pb-0">
         <div class="d-flex">
-            <a class="btn btn bg-dark m-3 align-self-center" id="sidebarToggle" data-toggle="offcanvas"
-               title="Toggle responsive left sidebar" style="height: fit-content;"><i class="fa fa-bars"></i></a>
             <a class="navbar-brand align-self-center" href="#" title="author: muhammadali40k@gmail.com">
                 <img  th:src="@{/images/spring.svg}" height="50px"
-                     alt="logo" class="navbar-brand">
+                     alt="logo" class="navbar-brand mx-3">
             </a>
         </div>
 
@@ -23,7 +21,7 @@
 
                 <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
                     <a class="nav-link" role="button" data-bs-toggle="list"
-                       onclick="getContent($('#mainContainer'),'/pics')">Bending Requests</a>
+                       onclick="getContent($('#mainContainer'),'/pics/pending')">Pending Requests</a>
                 </li>
 
                 <li class="nav-item">
@@ -37,10 +35,6 @@
                     <a class="nav-link" role="button" data-bs-toggle="list">About</a>
                 </li>
             </ul>
-            <form class="d-flex m-1">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-light" type="submit">Search</button>
-            </form>
             <button sec:authorize="isAnonymous()"
                     class="btn btn-outline-light m-1"
                     onclick="confirmDialog('LOGIN',null,null)">Login/Register

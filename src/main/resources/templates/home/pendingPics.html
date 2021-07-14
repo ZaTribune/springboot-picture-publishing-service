@@ -1,0 +1,73 @@
+<div xmlns:th="http://www.thymeleaf.org"
+     th:fragment="PendingPicsFragment" style="min-height: 100vh;">
+
+    <div class="row" th:if="${pics==null||pics.isEmpty()}">
+      <div class="alert alert-primary d-flex align-items-center" style="flex-direction: column;" role="alert">
+        <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 62.4 62.4"
+             style="width: 50px;height: 50px;margin-right: 10px;"
+             xml:space="preserve">
+             <style type="text/css">
+	           .st0{fill:#FDCA47;stroke:#231F20;stroke-width:4;stroke-miterlimit:10;}
+               .st1{fill:#20201E;}
+               .st4{fill:none;stroke:#231F20;stroke-width:4;stroke-linecap:round;stroke-miterlimit:10;}
+             </style>
+             <circle class="st0" cx="31.2" cy="31.2" r="28.3"></circle>
+             <path class="st4" d="M45.4,36c0,0-2.5,9.9-13.7,9.9h-0.5c-11.2,0-13.7-9.9-13.7-9.9"></path>
+             <circle class="st1" cx="20.7" cy="25.3" r="3.5"></circle>
+             <circle class="st1" cx="41.4" cy="25.3" r="3.5"></circle>
+         </svg>
+        <div>No Pending Requests</div>
+      </div>
+    </div>
+
+    <div class="row mb-3" th:if="${pics!=null&&!pics.isEmpty()}" style="height:100vh">
+        <div class="col-4 bg-light p-0">
+            <div class="list-group" id="list-tab" role="tablist">
+                <a class="list-group-item list-group-item-action" th:id="'pic-item-'+${pic.id}" data-bs-toggle="list"
+                   th:each="pic, stat : ${pics}" th:href="'#pic-content-'+${pic.id}" role="tab"
+                   th:text="${pic.path}"></a>
+            </div>
+        </div>
+        <div class="col-8">
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade" th:each="pic, stat : ${pics}"
+                     th:id="'pic-content-'+${pic.id}" role="tabpanel">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 th:text="${pic.path}"></h5>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="text-center mb-2">
+                                <img th:src="@{'pic/image/' +${pic.id}}" alt="Card image cap"
+                                     class="" th:height="300">
+                            </div>
+                            <label class="d-block mb-1"><b>Description:</b><span
+                                    th:text="' '+${pic.description}"></span></label>
+                            <label class="d-block mb-1"><b>Category:</b><span
+                                    th:text="' '+${pic.category}"></span></label>
+                        </div>
+                        <div class="card-footer">
+                            <a class="btn btn-success" onclick="approvePic(this.getAttribute('data-pic-id'))"
+                               th:attr="data-pic-id=${pic.id}"
+                               style="width: fit-content;"><i class="fa fa-check mx-1"></i>Approve</a>
+                            <a class="btn btn-danger" onclick="declinePic(this.getAttribute('data-pic-id'))"
+                               th:attr="data-pic-id=${pic.id}"
+                               style="width: fit-content;"><i class="fa fa-times mx-1"></i>Decline</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        //jQuery .load() call doesn't execute JavaScript in loaded HTML file
+        $(function() {
+            let triggerEl = document.querySelector('#list-tab a:first-child');
+            triggerEl.classList.add("active");
+            let firstContent = document.querySelector('#nav-tabContent div:first-child');
+            firstContent.classList.add("show", "active");
+        });
+    </script>
+
+</div>

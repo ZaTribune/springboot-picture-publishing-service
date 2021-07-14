@@ -91,6 +91,17 @@ public class MainController {
         return "/home/pics";
     }
 
+    @RequestMapping(value = "/pics/pending")
+    public String getPendingPicsFragment(Model model){
+        log.info("{}:{}",getClass().getSimpleName(),"/pics");
+        List<Pic>list=picService.getAllByStatus(List.of(PicStatus.PENDING));
+
+        log.info("{}:{}",getClass().getSimpleName(),list.size());
+
+        model.addAttribute("pics",list);
+        return "/home/pendingPics";
+    }
+
     @PostMapping(value = "/pics/add")
     public RedirectView addPic(@ModelAttribute("pic")@Valid Pic pic, @RequestParam("image") MultipartFile multipartFile, Model model) throws IOException {
         log.info("{}:{}",getClass().getSimpleName(),"/pics/add");
@@ -102,7 +113,7 @@ public class MainController {
         //todo: your picture will be reviewed by our admins before being approved ,stay toned.
 
         imageMapper.saveFile(PropertiesExtractor.FILE_SERVER_PATH, fileName, multipartFile);
-        pic.setStatus(PicStatus.BENDING);
+        pic.setStatus(PicStatus.PENDING);
         pic.setPath(fileName);
         picService.save(pic);
         return new RedirectView("/index", true);//return to home page
@@ -117,6 +128,28 @@ public class MainController {
 
         InputStream is = new ByteArrayInputStream(imageMapper.getImageUnWrapped(product.getPath()));
         IOUtils.copy(is, response.getOutputStream());
+    }
+
+    @GetMapping("/pics/pendingPics/approve/{id}")
+    public String approvePic(@PathVariable("id") Long id, Model model){
+
+        Pic product = picService.getById(id).orElseThrow(()->new NotFoundException(id));
+
+        product.setStatus(PicStatus.APPROVED);
+        picService.save(product);
+
+        model.addAttribute("pics",picService.getAllByStatus(List.of(PicStatus.PENDING)));
+
+        return "/home/pendingPics";
+    }
+
+    @GetMapping("/pics/pendingPics/decline/{id}")
+    public String declinePic(@PathVariable("id") Long id, Model model){
+        Pic product = picService.getById(id).orElseThrow(()->new NotFoundException(id));
+        product.setStatus(PicStatus.DECLINED);
+        picService.save(product);
+        model.addAttribute("pics",picService.getAllByStatus(List.of(PicStatus.PENDING)));
+        return "/home/pendingPics";
     }
 
     @RequestMapping("/modal/{type}")

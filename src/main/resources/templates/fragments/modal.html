@@ -37,6 +37,7 @@
             </div>
             <script>
                 function login(form) {
+                    $("#iframeloading").show();
                     $.ajax(
                         {
                             type: "POST",
@@ -48,7 +49,8 @@
                                     // console.log("invalid::"+ data)
                                     //document.body.parentElement.outerHTML=data
                                     document.write(data);
-                                    //document.location.href="/index";
+                                $("#iframeloading").hide();
+                                //document.location.href="/index";
                             },
                             error: function (data) {
                                 $('#loginError').text(data.responseText);//to get the response body

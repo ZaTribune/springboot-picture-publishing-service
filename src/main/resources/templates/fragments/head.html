@@ -20,6 +20,22 @@
           crossorigin="anonymous"
           th:href="@{/webjars/font-awesome/5.15.2/css/all.min.css}">
     <style>
+
+        .btn-primary {
+            color: wheat;
+            background-color: #2d3b4b;
+            border-color: #0a53be;
+        }
+        .btn-outline-light {
+            color: wheat;
+            border-color: wheat;
+        }
+        .bg-dark{
+            background-color: #2d3b4b!important
+        }
+        .bg-light{
+            background-color: #e3e3e3 !important;
+        }
         .centered {
             position: relative;
             top: 50%;
@@ -34,6 +50,7 @@
     </style>
     <script>
         function getContent(id, url) {
+            $("#mainContainer").load("page.html");
             $(id).load(url);
             let navbar = $("#navbarResponsive");
             if (navbar.hasClass('show')) {
@@ -104,6 +121,42 @@
                         console.log(data);
                         //$("html").html(data);
                         $("body").html(data);
+                    },
+                    error: function (data) {
+                        alert("Error - Data not saved");
+                    }
+                });
+        }
+
+        function approvePic(picId) {
+            $.ajax(
+                {
+                    //don't add contentType: false,processData: false,
+                    type: "GET",
+                    data: null,
+                    cache: false,
+                    url: "/pics/pendingPics/approve/"+picId,
+                    success: function (data) {
+                        console.log(data);
+                        $('#mainContainer').html(data);
+                    },
+                    error: function (data) {
+                        alert("Error - Data not saved");
+                    }
+                });
+        }
+
+        function declinePic(picId) {
+            $.ajax(
+                {
+                    //don't add contentType: false,processData: false,
+                    type: "GET",
+                    data: null,
+                    cache: false,
+                    url: "/pics/pendingPics/decline/"+picId,
+                    success: function (data) {
+                        console.log(data);
+                        $('#mainContainer').html(data);
                     },
                     error: function (data) {
                         alert("Error - Data not saved");

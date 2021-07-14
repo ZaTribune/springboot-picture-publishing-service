@@ -72,6 +72,18 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
         pic3.setPath("waterfall.png");
         pic3.setStatus(PicStatus.APPROVED);
         pic3.setDescription("Love is all, a waterfall.\npulls u in, takes u down.\nIt's a sad affair");
+
+        Pic pic4 = new Pic();
+        pic4.setCategory(Category.nature);
+        pic4.setPath("moon.gif");
+        pic4.setStatus(PicStatus.PENDING);
+        pic4.setDescription("Reminds u with something?!");
+
+        Pic pic5 = new Pic();
+        pic5.setCategory(Category.machine);
+        pic5.setPath("megatron.png");
+        pic5.setStatus(PicStatus.PENDING);
+        pic5.setDescription("I'm megatron.");
         //pic3.setUser(user);
 
         User admin = new User();
@@ -94,7 +106,9 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
         pic1.setUser(user);
         pic2.setUser(user);
         pic3.setUser(user);
-        user.setPics(Set.of(pic1,pic2,pic3));
+        user.setPics(Set.of(pic1,pic2,pic3,pic4,pic5));
+
+        //todo: we need the uploaded by
 
         userRepository.saveAll(List.of(admin, user));
     }
