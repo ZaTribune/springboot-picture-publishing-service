@@ -9,19 +9,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
-import zatribune.spring.pps.DTO.UserDTO;
 import zatribune.spring.pps.data.entities.Category;
 import zatribune.spring.pps.data.entities.Pic;
 import zatribune.spring.pps.data.entities.PicStatus;
 import zatribune.spring.pps.data.entities.User;
 import zatribune.spring.pps.exceptions.NotFoundException;
 import zatribune.spring.pps.services.PicService;
-import zatribune.spring.pps.services.SecurityService;
 import zatribune.spring.pps.utils.ImageMapper;
 import zatribune.spring.pps.utils.PropertiesExtractor;
 
@@ -63,7 +60,7 @@ public class MainController {
     public String getMainPage(Model model){
         log.info("{}:{}",getClass().getSimpleName(),"/index");
         model.addAttribute("hello_message","Welcome to our website!");
-        List<Pic>list=picService.getAll();
+        List<Pic>list=picService.getAllByStatus(List.of(PicStatus.APPROVED));
 
         SecurityContext securityContext= SecurityContextHolder.getContext();
 
@@ -84,7 +81,7 @@ public class MainController {
     @RequestMapping(value = "/pics")
     public String getPicsFragment(Model model){
         log.info("{}:{}",getClass().getSimpleName(),"/pics");
-        List<Pic>list=picService.getAll();
+        List<Pic>list=picService.getAllByStatus(List.of(PicStatus.APPROVED));
         log.info("{}:{}",getClass().getSimpleName(),list.size());
 
         model.addAttribute(new Pic());//case user choose to upload a pic

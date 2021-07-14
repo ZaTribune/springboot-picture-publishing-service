@@ -52,7 +52,7 @@
             <a class="btn btn-success" style="width: fit-content;" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa fa-plus mx-1"></i>Upload a pic</a>
         </div>
     </div>
-    <div class="row">
+    <div class="row" th:if="${pics!=null}">
         <div class="col-4">
             <div class="list-group" id="list-tab" role="tablist">
                 <a class="list-group-item list-group-item-action" th:id="'pic-item-'+${pic.id}" data-bs-toggle="list"

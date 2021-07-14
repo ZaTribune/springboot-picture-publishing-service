@@ -8,12 +8,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zatribune.spring.pps.data.entities.Role;
+import zatribune.spring.pps.data.entities.RoleEnum;
 import zatribune.spring.pps.data.entities.User;
 import zatribune.spring.pps.data.repositories.RoleRepository;
 import zatribune.spring.pps.data.repositories.UserRepository;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -36,35 +39,44 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) {
         log.info("find by username "+username);
 
-        User user = userRepository.findDistinctByUsername(username);
-        if (user == null)
-            throw new UsernameNotFoundException(username);
-        //Cast the current Mono produced type into a target produced type.
-        return user;
+        //throwing this exception will result in loading the default spring security login page
+        //if (user == null)
+            //throw new UsernameNotFoundException(username);
+
+        return userRepository.findDistinctByUsername(username);
     }
 
     public void save(User user) {
         //todo: check authorities
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        Role role= roleRepository.findAll().iterator().next();
+        Role role= roleRepository.findDistinctByName(RoleEnum.ROLE_USER.name());
         if (role!=null)
-            user.setRoles(new HashSet<>(List.of(role)));
+            user.setRoles(Set.of(role));
 
         userRepository.save(user);
     }
 
+
+    @Transactional//to fix a detached entity passed to persist ...Role
     public void saveToDefaults(User user) {
         //todo: check authorities
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
-        Role role= roleRepository.findAll().iterator().next();
+        Role role= roleRepository.findDistinctByName(RoleEnum.ROLE_USER.name());
         if (role!=null)
-            user.setRoles(new HashSet<>(List.of(role)));
+            user.setRoles(Set.of(role));
 
-        user.setEnabled(false);
-        user.setAccountNonLocked(false);
-        user.setAccountNonExpired(false);
-        user.setCredentialsNonExpired(false);
+        System.out.println("xxx "+ Objects.requireNonNull(role).getName());
+
+        //todo: those requests need to be confirmed via one of these 3 methods
+        //        1- by the admin
+        //        2- automatically by emails
+        //        3- using Spring social
+
+        user.setEnabled(true);
+        user.setAccountNonLocked(true);
+        user.setAccountNonExpired(true);
+        user.setCredentialsNonExpired(true);
         userRepository.save(user);
     }
 }

@@ -20,6 +20,12 @@
           crossorigin="anonymous"
           th:href="@{/webjars/font-awesome/5.15.2/css/all.min.css}">
     <style>
+        .centered {
+            position: relative;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
         .list-group-item{
             overflow: hidden;
             text-overflow: ellipsis;
@@ -84,6 +90,25 @@
             reader.onerror = function (error) {
                 console.log('Error: ', error);
             };
+        }
+
+        function registerUser(formJQueryElement) {
+            $.ajax(
+                {
+                    //don't add contentType: false,processData: false,
+                    type: "POST",
+                    data: formJQueryElement.serialize(),
+                    cache: false,
+                    url: "/registration/new",
+                    success: function (data) {
+                        console.log(data);
+                        //$("html").html(data);
+                        $("body").html(data);
+                    },
+                    error: function (data) {
+                        alert("Error - Data not saved");
+                    }
+                });
         }
     </script>
 </head>

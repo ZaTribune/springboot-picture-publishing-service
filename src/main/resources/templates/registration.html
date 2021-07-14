@@ -1,24 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<style>
-    .centered{
-        position: relative;top: 50%;left: 50%;transform: translate(-50%, -50%);
-    }
-</style>
-<head th:replace="/fragments/heads"></head>
-<body style="height: 100vh">
+<head th:replace="/fragments/head"></head>
+
+
+<body style="height: 100vh" th:fragment="RegistrationFragment">
 
 <header class="bg-dark" style="height: 25vh">
-    <img  th:src="@{/images/spring.svg}" height="150px"
-          alt="logo" class="centered" >
+    <img th:src="@{/images/spring.svg}" height="150px"
+         alt="logo" class="centered">
 </header>
 
-<div class="container col-sm-10 col-md-4 col-lg-3" style="height: 50vh">
-    <form th:action="@{/registration}" th:object="${user}" method="post" class="centered">
+<main class="container col-sm-10 col-md-4 col-lg-3" style="height: 50vh">
+    <div class="centered">
+    <form id="registrationForm" th:object="${user}" method="post">
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Email address</label>
             <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                   th:field="*{username}">
+                   th:field="*{username}" autocomplete="off">
             <div class="invalid-feedback d-inline-block" th:if="${#fields.hasErrors('username')}">
                 <ul class="m-0">
                     <li th:each="err:${#fields.errors('username')}" th:text="${err}"></li>
@@ -31,17 +29,22 @@
         </div>
         <div class="mb-3">
             <label for="confirmPassword" class="form-label">Confirm Password</label>
-            <input type="password" class="form-control" id="confirmPassword" th:field="*{passwordConfirm}">
+            <input type="password" class="form-control" id="confirmPassword" th:field="*{passwordConfirm}" autocomplete="off">
             <div class="invalid-feedback d-inline-block" th:if="${#fields.hasErrors('passwordConfirm')}">
                 <ul class="m-0">
                     <li th:each="err:${#fields.errors('passwordConfirm')}" th:text="${err}"></li>
                 </ul>
             </div>
         </div>
-
-        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
-</div>
+    <div class="text-center">
+        <button onclick="registerUser($('#registrationForm'))" class="btn btn-primary w-25 m-2"
+                th:height="50" type="submit">Submit
+        </button>
+    </div>
+    </div>
+</main>
+
 <footer class="bg-dark" style="height: 25vh">
     <div class="container py-4">
         <p class="text-muted mb-0 py-2 text-center">© 2021 ZaTribune All rights reserved.</p>

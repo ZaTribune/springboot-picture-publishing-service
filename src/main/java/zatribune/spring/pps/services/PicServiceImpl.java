@@ -3,6 +3,7 @@ package zatribune.spring.pps.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import zatribune.spring.pps.data.entities.Pic;
+import zatribune.spring.pps.data.entities.PicStatus;
 import zatribune.spring.pps.data.entities.User;
 import zatribune.spring.pps.data.repositories.PicRepository;
 
@@ -25,6 +26,11 @@ public class PicServiceImpl implements PicService{
     @Override
     public List<Pic> getAll() {
         return new ArrayList<>(repository.findAll());
+    }
+
+    @Override
+    public List<Pic> getAllByStatus(List<PicStatus>  status) {
+        return new ArrayList<>(repository.findAllByStatusIn(status));
     }
 
     @Override

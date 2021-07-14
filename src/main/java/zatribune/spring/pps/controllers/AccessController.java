@@ -40,7 +40,7 @@ public class AccessController {
         return "/registration";
     }
 
-    @PostMapping("/registration")
+    @PostMapping("/registration/new")
     public String registration(@ModelAttribute("user")@Valid UserDTO user, BindingResult bindingResult) {
 
         //customized check
@@ -54,9 +54,9 @@ public class AccessController {
             bindingResult.rejectValue("username","","A User with this email already exists.");
         }
         if (bindingResult.hasErrors()){
-            return "/registration";
+            return "/registration :: RegistrationFragment";
         }
-        userService.save(userMapper.toUser(user));
+        userService.saveToDefaults(userMapper.toUser(user));
         //todo: add account confirmation
         //securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
         return "redirect:/index";

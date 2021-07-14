@@ -48,10 +48,10 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
         log.info("initData()");
 
         Role roleAdmin = new Role();
-        roleAdmin.setName("ROLE_ADMIN");
+        roleAdmin.setName(RoleEnum.ROLE_ADMIN.name());
 
         Role roleUser = new Role();
-        roleUser.setName("ROLE_USER");
+        roleUser.setName(RoleEnum.ROLE_USER.name());
 
         Pic pic1 = new Pic();
         pic1.setCategory(Category.living_thing);

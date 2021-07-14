@@ -5,4 +5,5 @@ import zatribune.spring.pps.data.entities.Role;
 
 
 public interface RoleRepository extends JpaRepository<Role, Long> {
+    Role findDistinctByName(String name);
 }
