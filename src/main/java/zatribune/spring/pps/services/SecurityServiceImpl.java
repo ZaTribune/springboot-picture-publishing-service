@@ -15,12 +15,12 @@ import org.springframework.stereotype.Service;
 public class SecurityServiceImpl implements SecurityService {
 
     private final AuthenticationManager authenticationManager;
-    private final UserDetailsService userDetailsService;
+    private final UserService userService;
 
     @Autowired
-    public SecurityServiceImpl(AuthenticationManager authenticationManager, UserDetailsService userDetailsService) {
+    public SecurityServiceImpl(AuthenticationManager authenticationManager, UserService userService) {
         this.authenticationManager = authenticationManager;
-        this.userDetailsService = userDetailsService;
+        this.userService = userService;
     }
 
     public boolean isAuthenticated() {
@@ -35,7 +35,7 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Override
     public void autoLogin(String username, String password) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        UserDetails userDetails = userService.loadUserByUsername(username);
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
 
@@ -48,11 +48,11 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public UserDetailsService userService() {
-        return userDetailsService;
+    public UserService userService() {
+        return userService;
     }
 
-    public UserDetailsService getUserDetailsService() {
-        return userDetailsService;
+    public UserService getUserService() {
+        return userService;
     }
 }

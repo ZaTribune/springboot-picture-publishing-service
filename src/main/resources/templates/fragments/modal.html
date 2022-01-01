@@ -9,54 +9,16 @@
             <div class="modal-body">
                 <a th:text="${question}"></a>
                 <div class="container text-center">
-                    <form id="loginForm" th:object="${user}" th:if="${#strings.equals(title,'Login')}" method="post" th:action="@{/login}">
-                        <span th:text="${message}"></span>
-                        <!-- the value attribute is added for testing--->
-                        <input name="username" type="text" class="form-control m-1" placeholder="Username"
-                               autofocus autocomplete="on" aria-label=""
-                               value="admin@pps.com"/>
 
-                        <input name="password" type="password" class="form-control m-1" placeholder="Password"
-                               aria-label=""
-                               value="admin123"/>
-                        <span id="loginError" class="invalid-feedback d-inline-block"></span>
-                    </form>
-                    <button class="btn btn-primary m-1 w-50" type="submit"
-                            onclick="login($('#loginForm'),$('#myModal'))">Log In
-                    </button>
 
-                    <a class="btn btn-secondary m-1 w-50" th:href="@{registration}">Register</a>
                 </div>
 
             </div>
-
-            <div th:if="${!#strings.equals(title,'Login')}" class="modal-footer">
+            <div class="modal-footer">
                 <button type="button" id="btnCancelDialog" class="btn btn-secondary" data-bs-dismiss="modal">Cancel
                 </button>
                 <button type="button" id="btnOkDialog" class="btn btn-primary">Ok</button>
             </div>
-            <script>
-                function login(form) {
-                    $.ajax(
-                        {
-                            type: "POST",
-                            data: form.serialize(),//data to be sent
-                            cache: false,
-                            url: "/login",
-                            success: function (data) {
-                                    // $('#loginError').text(data)
-                                    // console.log("invalid::"+ data)
-                                    //document.body.parentElement.outerHTML=data
-                                    document.write(data);
-                                    //document.location.href="/index";
-                            },
-                            error: function (data) {
-                                $('#loginError').text(data.responseText);//to get the response body
-                                console.error(data);
-                            }
-                        });
-                }
-            </script>
         </div>
     </div>
 </div>

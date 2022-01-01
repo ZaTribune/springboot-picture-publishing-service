@@ -8,17 +8,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
-import zatribune.spring.pps.data.repositories.RoleRepository;
-import zatribune.spring.pps.data.repositories.UserRepository;
-import zatribune.spring.pps.services.UserDetailsServiceImpl;
+import zatribune.spring.pps.services.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,62 +26,50 @@ import java.util.Map;
 
 
 @Slf4j
+@EnableWebSecurity
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-
+    private final UserService userService;
 
     @Autowired
-    public SecurityConfig(UserRepository userRepository, RoleRepository roleRepository) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
+    public SecurityConfig(UserService userService) {
+        super();
+        this.userService = userService;
     }
-
 
     // Create source of Authentication manager
     //then it will call the two methods to create the user service & the encoder
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        log.warn("passwordEncoder()");
-        // This is the ID we use for encoding.
-        String currentId = "pbkdf2.2018";
-        String secret="secret";
-        // List of all encoders we support. Old ones still need to be here for rolling updates
-        Map<String, PasswordEncoder> encoders = new HashMap<>();
-        encoders.put("bcrypt", new BCryptPasswordEncoder());
-        encoders.put(currentId, new Pbkdf2PasswordEncoder(secret, 12, 181));
-        return new DelegatingPasswordEncoder(currentId, encoders);
-    }
+    /**
+     * Password-Based Key Derivation Function 2
+     * PBKDF2 prevents password cracking tools from making the best use of graphics processing units (GPUs),
+     * which reduces guess rates from hundreds of thousands of guesses per second, to less than a few tens of
+     * thousands of guesses per second.
+     * PBKDF2 applies a pseudorandom function, such as hash-based message authentication code (HMAC),
+     * to the input password or passphrase along with a salt value and repeats the process many times
+     * to produce a derived key, which can then be used as a cryptographic key in subsequent operations.
+     *
+     * How does bcrypt algorithm work?
+     * The problems present in traditional UNIX password hashes led naturally to a new password scheme
+     * which we call bcrypt, referring to the Blowfish encryption algorithm.
+     * Bcrypt uses a 128-bit salt and encrypts a 192-bit magic value.
+     * It takes advantage of the expensive key setup in eksblowfish.
+     *
+     **/
 
-    // Specify the manager
-    @Bean
     @Override
+    @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
-        log.warn("authenticationManagerBean()");
-        //will call the builder if not initialized
-        //so we'll specify a builder of our own
-        return authenticationManager();
+        return super.authenticationManagerBean();
     }
 
     //the manager builder
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         log.warn("configure(AuthenticationManagerBuilder auth)");
-        auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userService);
     }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        //because it depends on injected beans
-        log.warn("userDetailsService()");
-        return new UserDetailsServiceImpl(userRepository, roleRepository, passwordEncoder());
-    }
-
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -100,6 +86,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     exception.printStackTrace();
                     response.getWriter().write("Bad Credentials!");
+                })
+                .successHandler((request, response, authentication) -> {
+                    response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+                    response.setHeader("location", "/login/OK");
+
                 }).and().csrf().disable()
                 .logout()
                 .logoutUrl("/logout")
@@ -113,7 +104,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     static class AuthenticationEntryPoint extends LoginUrlAuthenticationEntryPoint {
-        public AuthenticationEntryPoint()  {
+        public AuthenticationEntryPoint() {
             super("");
         }
 

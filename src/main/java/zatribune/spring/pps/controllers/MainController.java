@@ -12,16 +12,15 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import zatribune.spring.pps.DTO.UserDTO;
 import zatribune.spring.pps.DTO.UserMapper;
-import zatribune.spring.pps.data.entities.PicCategory;
 import zatribune.spring.pps.data.entities.Pic;
+import zatribune.spring.pps.data.entities.PicCategory;
 import zatribune.spring.pps.data.entities.PicStatus;
 import zatribune.spring.pps.data.entities.User;
 import zatribune.spring.pps.services.PicService;
 import zatribune.spring.pps.services.SecurityService;
-import zatribune.spring.pps.services.UserDetailsService;
+import zatribune.spring.pps.services.UserService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
@@ -44,8 +43,17 @@ public class MainController {
         this.userMapper =userMapper;
     }
 
+    @RequestMapping(value = {"/login/OK"})
+    public String loginSuccessful(HttpServletRequest request, Model model) {
+        List<Pic> list=picService.getAllByStatus(List.of(PicStatus.APPROVED));
+        model.addAttribute(new Pic());//case user choose to upload a pic
+        model.addAttribute("pics",list);
+        model.addAttribute("categories", PicCategory.values());
+        return "index :: BodyFragment";
+    }
+
     @RequestMapping(value = {"/exit"})
-    public String logout(HttpServletRequest request, HttpServletResponse response) {
+    public String logout(HttpServletRequest request) {
         SecurityContextHolder.clearContext();
         HttpSession session = request.getSession(false);
         if (session != null) {
@@ -95,7 +103,7 @@ public class MainController {
             log.error("Passwords don't match.");
             bindingResult.rejectValue("passwordConfirm","","Password Fields Must match.");
         }
-        UserDetailsService userService=securityService.userService();
+        UserService userService=securityService.userService();
         if(userService.loadUserByUsername(user.getUsername())!=null){
             log.error("A User with this email already exists.");
             bindingResult.rejectValue("username","","A User with this email already exists.");
@@ -119,7 +127,8 @@ public class MainController {
                 model.addAttribute("user",new User());
                 model.addAttribute("title", "Login");
                 model.addAttribute("info", "Please, enter your credentials.");
-                break;
+
+                return "fragments/loginModal";
             case INFO:
                 model.addAttribute("title", "");
                 model.addAttribute("info", "....some information");

@@ -1,0 +1,57 @@
+<div xmlns:th="http://www.thymeleaf.org"
+     class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" th:text="${title}"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <a th:text="${question}"></a>
+                <div class="container text-center">
+                    <form id="loginForm" th:object="${user}" method="post" th:action="@{/login}">
+                        <span th:text="${message}"></span>
+                        <!-- the value attribute is added for testing--->
+                        <input name="username" type="text" class="form-control m-1" placeholder="Username"
+                               autofocus autocomplete="on" aria-label=""
+                               value="admin@pps.com"/>
+
+                        <input name="password" type="password" class="form-control m-1" placeholder="Password"
+                               aria-label=""
+                               value="admin123"/>
+                        <span id="loginError" class="invalid-feedback d-inline-block"></span>
+                    </form>
+                    <div class="modal-footer d-block text-center">
+                        <button class="btn btn-primary m-1" type="submit"
+                                onclick="login($('#loginForm'),$('#myModal'))" style="width: 10vw">Log In</button>
+                        <button class="btn btn-secondary m-1" th:href="@{registration}" style="width: 10vw">Register</button>
+                    </div>
+                </div>
+
+            </div>
+            <script>
+                function login(form) {
+                    document.getElementById('mainSpinner').classList.remove("d-none");
+                    $.ajax(
+                        {
+                            type: "POST",
+                            data: form.serialize(),//data to be sent
+                            cache: false,
+                            url: "/login",
+                            success: function (data) {
+                                console.log(data)
+                                //document.write(data);
+                                $('body').html(data)
+                            },
+                            error: function (data) {
+                                $('#loginError').text(data.responseText);//to get the response body
+                                console.error(data);
+                            }, oncomplete: function () {
+                                document.getElementById('mainSpinner').classList.add("d-none");
+                            }
+                        });
+                }
+            </script>
+        </div>
+    </div>
+</div>

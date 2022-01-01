@@ -3,7 +3,7 @@
 
 <head th:replace="fragments/head"></head>
 
-<body class="bg-body">
+<body class="bg-body" th:fragment="BodyFragment">
 <header th:replace="fragments/header"></header>
 <div id="iframeloading" class="spinner-border text-success centered" role="status">
     <span class="sr-only">Loading...</span>
@@ -15,6 +15,12 @@
       th:insert="home/pics::MainProductsFragment"
       style="min-height:100vh;margin-top: 12vh;">
 </main>
+<div id="mainSpinner" class="w-100 h-100 fixed-top d-none" style="background-color:rgba(0,0,0,0.4);z-index: 1070;">
+    <div class="spinner-grow text-primary" role="status" style="position: relative;top: 50%;left: 50%;">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+
 
 <footer th:replace="fragments/footer"></footer>
 
