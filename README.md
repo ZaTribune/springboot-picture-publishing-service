@@ -55,4 +55,4 @@ Rejected pictures have their pictures removed, but the metadata remains.
   - role/authority: USER 
 
 ## Authors  
-   **Muhammad Ali** - find me on : [LinkedIn](htps://www.linkedin.com/in/zatribune).    
+   **Muhammad Ali** - find me on : [LinkedIn](https://www.linkedin.com/in/zatribune).    
