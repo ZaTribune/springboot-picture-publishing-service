@@ -1,15 +1,16 @@
 package zatribune.spring.pps.data.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -20,9 +21,11 @@ import java.util.Set;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@Builder
 @Entity
-@Table(name = "basic_user")
-public class User implements UserDetails {
+public class AppUser implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,11 +40,9 @@ public class User implements UserDetails {
     @Transient
     private String passwordConfirm;
 
-    @ManyToMany (fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    // this one is optional==but is required case you named identity attributes as “id”
-    @JoinTable (name = "basic_user_role", joinColumns = @JoinColumn (name = "basic_user"),
-            inverseJoinColumns =   @JoinColumn (name = "role"))
-    private Set<Role> roles;
+    @Enumerated(EnumType.STRING)
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<Role> roles;
 
     private Boolean accountNonExpired;
 
@@ -52,12 +53,26 @@ public class User implements UserDetails {
     private Boolean enabled;
 
     //detached entity passed to persist
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE},mappedBy = "user")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE},mappedBy = "appUser")
     private Set<Pic> pics;
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles;
+    public List<GrantedAuthority> getAuthorities(){
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role.toString())));
+        return authorities;
+    }
+
+    public void grantAuthority(Role authority) {
+        if ( roles == null ) roles = new ArrayList<>();
+        roles.add(0,authority);
+    }
+
+    public AppUser() {
+        this.accountNonExpired = true;
+        this.accountNonLocked = true;
+        this.credentialsNonExpired = true;
+        this.enabled = true;
     }
 
     @Override

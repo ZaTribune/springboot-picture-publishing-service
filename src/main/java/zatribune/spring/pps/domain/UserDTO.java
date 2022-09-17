@@ -1,4 +1,4 @@
-package zatribune.spring.pps.DTO;
+package zatribune.spring.pps.domain;
 
 
 import lombok.Getter;

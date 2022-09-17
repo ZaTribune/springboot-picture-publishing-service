@@ -10,12 +10,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-import zatribune.spring.pps.DTO.UserDTO;
-import zatribune.spring.pps.DTO.UserMapper;
+import zatribune.spring.pps.domain.UserDTO;
+import zatribune.spring.pps.domain.UserMapper;
 import zatribune.spring.pps.data.entities.Pic;
 import zatribune.spring.pps.data.entities.PicCategory;
 import zatribune.spring.pps.data.entities.PicStatus;
-import zatribune.spring.pps.data.entities.User;
+import zatribune.spring.pps.data.entities.AppUser;
 import zatribune.spring.pps.services.PicService;
 import zatribune.spring.pps.services.SecurityService;
 import zatribune.spring.pps.services.UserService;
@@ -124,7 +124,7 @@ public class MainController {
         //todo: use Fragmentation =>e.g.  return "fragments/modal :: " + modalType;
         switch (type) {
             case LOGIN:
-                model.addAttribute("user",new User());
+                model.addAttribute("user",new AppUser());
                 model.addAttribute("title", "Login");
                 model.addAttribute("info", "Please, enter your credentials.");
 

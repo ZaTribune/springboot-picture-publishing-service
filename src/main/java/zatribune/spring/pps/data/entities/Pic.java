@@ -1,15 +1,16 @@
 package zatribune.spring.pps.data.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
-@Table
 public class Pic {
 
     @Id
@@ -17,8 +18,8 @@ public class Pic {
     private Long id;
 
     @ManyToOne
-    @JoinColumn (name = "user", referencedColumnName = "id")
-    private User user;
+    @JoinColumn (name = "app_user", referencedColumnName = "id")
+    private AppUser appUser;
 
     private String description;
 

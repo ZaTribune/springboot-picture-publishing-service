@@ -1,0 +1,16 @@
+<div xmlns:th="http://www.thymeleaf.org"
+     th:fragment="CategoriesFragment">
+
+    <div class="card-group">
+
+        <div class="card"
+             th:each="category, stat : ${categories}" th:href="'#category-card-'+${category.name}" role="tab">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${category.getLabel()}"></h5>
+                <p class="card-text"><small class="text-muted" th:text="${category.getDescription()()}"></small></p>
+            </div>
+        </div>
+
+    </div>
+
+</div>

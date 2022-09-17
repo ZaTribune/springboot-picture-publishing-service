@@ -5,25 +5,29 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.1</version>
+        <version>2.7.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>zatribune.spring.pps</groupId>
     <artifactId>picture-publishing-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>picture-publishing-service</name>
-    <description>The client needs a website where registered and logged in users can upload pictures for acceptance or
-        rejection. An administrator will login and review all submissions. Accepted pictures will be assigned a URL
+    <description>The client needs a website where registered and logged-in users can upload pictures for acceptance or
+        rejection. An administrator will sign in and review all submissions. Accepted pictures will be assigned a URL
         which can be accessed by all users (without login). Rejected pictures have their pictures removed but the
         metadata remains
     </description>
     <properties>
         <java.version>11</java.version>
-        <jquery.version>3.5.1</jquery.version>
-        <bootstrap.version>5.0.1</bootstrap.version>
-        <fontawesome.version>5.15.2</fontawesome.version>
+        <jquery.version>3.6.1</jquery.version>
+        <bootstrap.version>5.2.0</bootstrap.version>
+        <fontawesome.version>6.1.2</fontawesome.version>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -41,13 +45,11 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.thymeleaf.extras</groupId>
             <artifactId>thymeleaf-extras-springsecurity5</artifactId>
         </dependency>
+
+
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>jquery</artifactId>
@@ -104,6 +106,23 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <container>
+                        <mainClass>zatribune.spring.pps.PicturePublishingServiceApplication</mainClass>
+                    </container>
+                    <from>
+                        <image>gcr.io/distroless/java:11</image>
+                    </from>
+                    <to>
+                        <image>tribune.jfrog.io/tribune/picture-publishing-service:${project.version}</image>
+                    </to>
                 </configuration>
             </plugin>
         </plugins>

@@ -2,10 +2,10 @@ package zatribune.spring.pps.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import zatribune.spring.pps.data.entities.AppUser;
 import zatribune.spring.pps.data.entities.Pic;
 import zatribune.spring.pps.data.entities.PicCategory;
 import zatribune.spring.pps.data.entities.PicStatus;
-import zatribune.spring.pps.data.entities.User;
 import zatribune.spring.pps.data.repositories.PicRepository;
 
 import java.util.ArrayList;
@@ -40,8 +40,8 @@ public class PicServiceImpl implements PicService {
     }
 
     @Override
-    public List<Pic> getAllByUser(User user) {
-        return new ArrayList<>(repository.findAllByUser(user));
+    public List<Pic> getAllByUser(AppUser appUser) {
+        return new ArrayList<>(repository.findAllByAppUser(appUser));
     }
 
     @Override

@@ -28,7 +28,7 @@
                             <label for="categorySelect" class="form-label m-1">Category</label>
                             <select type="email" class="form-select" id="categorySelect"
                                     th:field="*{category}">
-                                <option th:each="cat, stat : ${categories}" th:value="${cat}" th:text="${cat}"></option>
+                                <option th:each="cat, stat : ${categories}" th:value="${cat}" th:text="${cat.getLabel()}"></option>
                             </select>
                         </div>
                         <div class="mb-3 col-sm-10 col-md-4 col-lg-8 m-auto">
@@ -84,9 +84,9 @@
                             <label class="d-block mb-1"><b>Description:</b><span
                                     th:text="' '+${pic.description}"></span></label>
                             <label class="d-block mb-1"><b>Category:</b><span
-                                    th:text="' '+${pic.category}"></span></label>
+                                    th:text="' '+${pic.category.getLabel()}"></span></label>
                             <label class="d-block mb-1"><b>Uploaded by:</b><span
-                                    th:text="' '+${pic.user?.username}"></span></label>
+                                    th:text="' '+${pic.appUser?.username}"></span></label>
                         </div>
                     </div>
                 </div>

@@ -1,74 +1,60 @@
 package zatribune.spring.pps.config;
 
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import zatribune.spring.pps.data.entities.Role;
 import zatribune.spring.pps.services.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 
 @Slf4j
-@EnableWebSecurity
 @Configuration
+@AllArgsConstructor
+@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserService userService;
 
-    @Autowired
-    public SecurityConfig(UserService userService) {
-        super();
-        this.userService = userService;
+    private final PasswordEncoder passwordEncoder;
+
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider(){
+
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(passwordEncoder);
+        provider.setUserDetailsService(userService);
+        return provider;
     }
 
     // Create source of Authentication manager
     //then it will call the two methods to create the user service & the encoder
-
-    /**
-     * Password-Based Key Derivation Function 2
-     * PBKDF2 prevents password cracking tools from making the best use of graphics processing units (GPUs),
-     * which reduces guess rates from hundreds of thousands of guesses per second, to less than a few tens of
-     * thousands of guesses per second.
-     * PBKDF2 applies a pseudorandom function, such as hash-based message authentication code (HMAC),
-     * to the input password or passphrase along with a salt value and repeats the process many times
-     * to produce a derived key, which can then be used as a cryptographic key in subsequent operations.
-     *
-     * How does bcrypt algorithm work?
-     * The problems present in traditional UNIX password hashes led naturally to a new password scheme
-     * which we call bcrypt, referring to the Blowfish encryption algorithm.
-     * Bcrypt uses a 128-bit salt and encrypts a 192-bit magic value.
-     * It takes advantage of the expensive key setup in eksblowfish.
-     *
-     **/
-
     @Override
-    @Bean
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
+    protected void configure(AuthenticationManagerBuilder auth) {
+        auth.authenticationProvider(authenticationProvider());
     }
 
-    //the manager builder
+
+    //Expose the AuthenticationManager
+    @Bean
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        log.warn("configure(AuthenticationManagerBuilder auth)");
-        auth.userDetailsService(userService);
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     @Override
@@ -78,13 +64,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(new AuthenticationEntryPoint())//remove default login page when accessing forbidden URL's on the browser
                 .and().anonymous()
                 .and()
-                .authorizeRequests().antMatchers("/pics/pending/**").hasRole("ADMIN")
+                .authorizeRequests().antMatchers("/pics/pending/**").hasRole(Role.ADMIN.name())
                 .and()
                 .formLogin()
                 .failureHandler((request, response, exception) -> {
                     log.error("{}:{}", exception, "Login Failed!.");
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                    exception.printStackTrace();
+                    //exception.printStackTrace();
                     response.getWriter().write("Bad Credentials!");
                 })
                 .successHandler((request, response, authentication) -> {

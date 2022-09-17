@@ -9,7 +9,7 @@
             <div class="modal-body">
                 <a th:text="${question}"></a>
                 <div class="container text-center">
-                    <form id="loginForm" th:object="${user}" method="post" th:action="@{/login}">
+                    <form id="loginForm" th:object="${appUser}" method="post" th:action="@{/login}">
                         <span th:text="${message}"></span>
                         <!-- the value attribute is added for testing--->
                         <input name="username" type="text" class="form-control m-1" placeholder="Username"
@@ -46,7 +46,6 @@
                             error: function (data) {
                                 $('#loginError').text(data.responseText);//to get the response body
                                 console.error(data);
-                            }, oncomplete: function () {
                                 document.getElementById('mainSpinner').classList.add("d-none");
                             }
                         });

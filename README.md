@@ -22,9 +22,9 @@ Rejected pictures have their pictures removed, but the metadata remains.
   - picCategory  
 - only three fixed categories: living thing, machine, nature  
 - attachment (up to 2 Mb) (jpg, png, gif only)  
-- An administrative user can login to a separate admin page  
+- An administrative appUser can login to a separate admin page  
 - a built-in admin with a username "admin" and password "admin123"  
-  - Administrative user sees list of uploaded pictures  
+  - Administrative appUser sees list of uploaded pictures  
   - list of all uploaded, unprocessed pictures  
   - anything that was accepted or rejected does not show up here  
   - Admin can select a picture to process it  
@@ -47,10 +47,10 @@ Rejected pictures have their pictures removed, but the metadata remains.
   and configure directories.  
 - This project uses an embedded "h2 database" so there's no need for a dbms e.g. MySQL or Postgres ...etc  
 - There are 2 provided users by default  
-  - user: admin@pps.com  
+  - appUser: admin@pps.com  
   - password: admin123  
   - role/authority: ADMIN  
-  - user: muhammad.ali@pps.com
+  - appUser: muhammad.ali@pps.com
   - password: user123
   - role/authority: USER 
 
