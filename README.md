@@ -1,6 +1,6 @@
 # Picture Publishing Service  
   
-An Example for a Spring Boot Web Application.
+A demo web application for a Picture Publishing Website built with SpringBoot.
 
 <p align="center">
   <img src="src/main/resources/static/images/spring.svg" width="200" height="200"/>
@@ -55,4 +55,4 @@ Rejected pictures have their pictures removed, but the metadata remains.
   - role/authority: USER 
 
 ## Authors  
-   **Muhammad Ali Arafah** - find me on : [Twitter](https://twitter.com/ZaTribune), [LinkedIn](https://www.linkedin.com/in/zatribune).    
+[![Linkedin](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white&label=Muhammad%20Ali)](https://linkedin.com/in/zatribune)
