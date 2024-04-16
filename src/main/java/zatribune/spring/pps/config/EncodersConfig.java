@@ -47,7 +47,7 @@ public class EncodersConfig {
         Map<String, PasswordEncoder> encoders = new HashMap<>();
         encoders.put("bcrypt", new BCryptPasswordEncoder());
         //didn't use salt
-        encoders.put(currentId, new Pbkdf2PasswordEncoder(secret, 12, 181));
+        encoders.put(currentId, new Pbkdf2PasswordEncoder(secret, 12, 181, Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm.PBKDF2WithHmacSHA256));
         return new DelegatingPasswordEncoder(currentId, encoders);
     }
 }

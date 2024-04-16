@@ -1,7 +1,7 @@
 <header class="bg-dark fixed-top" style="height: 80px"
         xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark pt-0 pb-0 h-100">
-        <div class="d-flex">
+        <div class="d-flex h-100">
             <a class="navbar-brand align-self-center" href="#" title="author: muhammadali40k@gmail.com">
                 <img  th:src="@{/images/spring.svg}" height="50px"
                      alt="logo" class="navbar-brand mx-3">
@@ -13,14 +13,14 @@
                 aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="navbar-collapse collapse p-2" id="navbarResponsive">
+        <div class="navbar-collapse bg-dark collapse p-2" id="navbarResponsive">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 list-group" role="list">
                 <li class="nav-item">
                     <a class="nav-link active" role="button" data-bs-toggle="list"
                        onclick="getContent($('#mainContainer'),'/pics')">Pictures</a>
                 </li>
 
-                <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
                     <a class="nav-link" role="button" data-bs-toggle="list"
                        onclick="getContent($('#mainContainer'),'/pics/pending')">Pending Requests</a>
                 </li>
@@ -46,7 +46,7 @@
                 <strong>You have been signed out.</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            <div class="d-flex m-1 bg-secondary rounded" sec:authorize="isAuthenticated()"
+            <div class="d-flex float-start m-1 bg-secondary rounded" sec:authorize="isAuthenticated()"
                  style="place-content:space-between">
                 <form id="logoutForm" method="POST" th:action="@{/logout}"></form>
                 <a class="btn btn-dark m-1" onclick="document.forms['logoutForm'].submit()">Logout</a>

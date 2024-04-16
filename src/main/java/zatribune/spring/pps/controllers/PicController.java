@@ -1,6 +1,8 @@
 package zatribune.spring.pps.controllers;
 
 
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +22,7 @@ import zatribune.spring.pps.services.PicService;
 import zatribune.spring.pps.utils.ImageMapper;
 import zatribune.spring.pps.utils.PropertiesExtractor;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -66,12 +67,15 @@ public class PicController {
     }
 
     @PostMapping(value = "/pics/add")
-    public RedirectView addPic(@ModelAttribute("pic") @Valid Pic pic, @RequestParam("image") MultipartFile multipartFile, Model model
-    , @AuthenticationPrincipal AppUser appUser) throws IOException {
+    public RedirectView addPic(@ModelAttribute("pic") @Valid Pic pic,
+                               @RequestParam("image") MultipartFile multipartFile,
+                               Model model,
+                               @AuthenticationPrincipal AppUser appUser) throws IOException {
         log.info("{}:{}", getClass().getSimpleName(), "/pics/add");
         String fileName = null;
         if (multipartFile.getOriginalFilename() != null) {
             fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            fileName = imageMapper.generateTimestampedFilename(fileName);
             log.info("{}:{}", getClass().getSimpleName(), fileName);
         }
         //todo: your picture will be reviewed by our admins before being approved ,stay toned.

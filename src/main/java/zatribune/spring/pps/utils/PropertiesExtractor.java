@@ -5,14 +5,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 
-@PropertySource(name="customMapProperties", value="classpath:/application.properties")
+@PropertySource(name = "customMapProperties", value = "classpath:/application.properties")
 @Component
 public class PropertiesExtractor {
     public static String FILE_SERVER_PATH;
-
-
-    public PropertiesExtractor(@Value("${server.file-server.location}")String c){
-      FILE_SERVER_PATH=c;
-    }
 
 }

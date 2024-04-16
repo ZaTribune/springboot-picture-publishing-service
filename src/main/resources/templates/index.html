@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org" lang="en">
 
-<head th:replace="fragments/head"></head>
+<head th:replace="~{fragments/head}"></head>
 
 <body class="bg-body" th:fragment="BodyFragment">
-<header th:replace="fragments/header"></header>
+<header th:replace="~{fragments/header}"></header>
 <div id="iframeloading" class="spinner-border text-success centered" role="status">
     <span class="sr-only">Loading...</span>
 </div>
@@ -12,7 +12,7 @@
 <div id="modalOverlay"></div>
 <!-- Here, we'll play with the content-->
 <main class="container container-fluid justify-content-center" id="mainContainer"
-      th:insert="home/pics::MainProductsFragment"
+      th:insert="~{home/pics::MainProductsFragment}"
       style="min-height:100vh;margin-top: 12vh;">
 </main>
 <div id="mainSpinner" class="w-100 h-100 fixed-top d-none" style="background-color:rgba(0,0,0,0.4);z-index: 1070;">
@@ -22,7 +22,7 @@
 </div>
 
 
-<footer th:replace="fragments/footer"></footer>
+<footer th:replace="~{fragments/footer}"></footer>
 
 </body>
 </html>

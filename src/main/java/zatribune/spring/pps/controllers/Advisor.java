@@ -11,7 +11,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.io.IOException;
 
 @ControllerAdvice
-public class AdvisorController extends ResponseEntityExceptionHandler {
+public class Advisor extends ResponseEntityExceptionHandler {
 
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     @ExceptionHandler(IOException.class)

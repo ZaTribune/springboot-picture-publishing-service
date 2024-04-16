@@ -1,8 +1,7 @@
 package zatribune.spring.pps.data.entities;
 
+import jakarta.persistence.*;
 import lombok.*;
-
-import javax.persistence.*;
 
 
 @Getter

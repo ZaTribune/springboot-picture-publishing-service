@@ -1,6 +1,9 @@
 package zatribune.spring.pps.controllers;
 
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContext;
@@ -20,9 +23,6 @@ import zatribune.spring.pps.services.PicService;
 import zatribune.spring.pps.services.SecurityService;
 import zatribune.spring.pps.services.UserService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import java.util.List;
 
 
@@ -34,20 +34,20 @@ public class MainController {
     private final PicService picService;
     private final UserMapper userMapper;
 
-    private boolean logout =false;
+    private boolean logout = false;
 
     @Autowired
-    public MainController(SecurityService securityService, PicService picService, UserMapper userMapper){
-        this.securityService=securityService;
-        this.picService=picService;
-        this.userMapper =userMapper;
+    public MainController(SecurityService securityService, PicService picService, UserMapper userMapper) {
+        this.securityService = securityService;
+        this.picService = picService;
+        this.userMapper = userMapper;
     }
 
     @RequestMapping(value = {"/login/OK"})
     public String loginSuccessful(HttpServletRequest request, Model model) {
-        List<Pic> list=picService.getAllByStatus(List.of(PicStatus.APPROVED));
-        model.addAttribute(new Pic());//case user choose to upload a pic
-        model.addAttribute("pics",list);
+        List<Pic> list = picService.getAllByStatus(List.of(PicStatus.APPROVED));
+        model.addAttribute(new Pic());//case user chooses to upload a pic
+        model.addAttribute("pics", list);
         model.addAttribute("categories", PicCategory.values());
         return "index :: BodyFragment";
     }
@@ -59,29 +59,29 @@ public class MainController {
         if (session != null) {
             session.invalidate();
         }
-        logout =true;
+        logout = true;
         return "redirect:";
     }
 
-    @RequestMapping(value = {"/","/index",""})
-    public String getMainPage(Model model){
-        log.info("{}:{}",getClass().getSimpleName(),"/index");
-        model.addAttribute("hello_message","Welcome to our website!");
-        List<Pic> list=picService.getAllByStatus(List.of(PicStatus.APPROVED));
+    @RequestMapping(value = {"/", "/index", ""})
+    public String getMainPage(Model model) {
+        log.info("{}:{}", getClass().getSimpleName(), "/index");
+        model.addAttribute("hello_message", "Welcome to our website!");
+        List<Pic> list = picService.getAllByStatus(List.of(PicStatus.APPROVED));
 
-        SecurityContext securityContext= SecurityContextHolder.getContext();
+        SecurityContext securityContext = SecurityContextHolder.getContext();
 
-        if (securityContext.getAuthentication()!=null)
-            log.info("{}:{}",getClass().getSimpleName(),securityContext.getAuthentication().toString());
+        if (securityContext.getAuthentication() != null)
+            log.info("{}:{}", getClass().getSimpleName(), securityContext.getAuthentication().toString());
 
         model.addAttribute(new Pic());//case user choose to upload a pic
-        model.addAttribute("pics",list);
+        model.addAttribute("pics", list);
         model.addAttribute("categories", PicCategory.values());
 
-        if (logout){
+        if (logout) {
             model.addAttribute("logout", true);
         }
-        logout =false;
+        logout = false;
         return "index";
     }
 
@@ -96,19 +96,19 @@ public class MainController {
     }
 
     @PostMapping("/registration/new")
-    public String registration(@ModelAttribute("user")@Valid UserDTO user, BindingResult bindingResult) {
+    public String registration(@ModelAttribute("user") @Valid UserDTO user, BindingResult bindingResult) {
 
         //customized check
-        if (!user.getPassword().equals(user.getPasswordConfirm())){
+        if (!user.getPassword().equals(user.getPasswordConfirm())) {
             log.error("Passwords don't match.");
-            bindingResult.rejectValue("passwordConfirm","","Password Fields Must match.");
+            bindingResult.rejectValue("passwordConfirm", "", "Password Fields Must match.");
         }
-        UserService userService=securityService.userService();
-        if(userService.loadUserByUsername(user.getUsername())!=null){
+        UserService userService = securityService.userService();
+        if (userService.loadUserByUsername(user.getUsername()) != null) {
             log.error("A User with this email already exists.");
-            bindingResult.rejectValue("username","","A User with this email already exists.");
+            bindingResult.rejectValue("username", "", "A User with this email already exists.");
         }
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             return "/registration :: RegistrationFragment";
         }
         userService.saveToDefaults(userMapper.toUser(user));
@@ -124,7 +124,7 @@ public class MainController {
         //todo: use Fragmentation =>e.g.  return "fragments/modal :: " + modalType;
         switch (type) {
             case LOGIN:
-                model.addAttribute("user",new AppUser());
+                model.addAttribute("user", new AppUser());
                 model.addAttribute("title", "Login");
                 model.addAttribute("info", "Please, enter your credentials.");
 

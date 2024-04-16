@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.3</version>
+        <version>3.2.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>zatribune.spring.pps</groupId>
@@ -14,13 +14,13 @@
     <name>picture-publishing-service</name>
     <description>The client needs a website where registered and logged-in users can upload pictures for acceptance or
         rejection. An administrator will sign in and review all submissions. Accepted pictures will be assigned a URL
-        which can be accessed by all users (without login). Rejected pictures have their pictures removed but the
-        metadata remains
+        which can be accessed by all users (without a login). Rejected pictures have their pictures removed but the
+        metadata remains.
     </description>
     <properties>
-        <java.version>11</java.version>
-        <jquery.version>3.6.1</jquery.version>
-        <bootstrap.version>5.2.0</bootstrap.version>
+        <java.version>17</java.version>
+        <jquery.version>3.7.1</jquery.version>
+        <bootstrap.version>5.3.3</bootstrap.version>
         <fontawesome.version>6.1.2</fontawesome.version>
     </properties>
     <dependencies>
@@ -46,7 +46,7 @@
         </dependency>
         <dependency>
             <groupId>org.thymeleaf.extras</groupId>
-            <artifactId>thymeleaf-extras-springsecurity5</artifactId>
+            <artifactId>thymeleaf-extras-springsecurity6</artifactId>
         </dependency>
 
 
@@ -106,23 +106,6 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>com.google.cloud.tools</groupId>
-                <artifactId>jib-maven-plugin</artifactId>
-                <version>3.2.0</version>
-                <configuration>
-                    <container>
-                        <mainClass>zatribune.spring.pps.PicturePublishingServiceApplication</mainClass>
-                    </container>
-                    <from>
-                        <image>gcr.io/distroless/java:11</image>
-                    </from>
-                    <to>
-                        <image>tribune.jfrog.io/tribune/picture-publishing-service:${project.version}</image>
-                    </to>
                 </configuration>
             </plugin>
         </plugins>

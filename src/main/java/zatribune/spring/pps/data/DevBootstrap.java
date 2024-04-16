@@ -6,11 +6,12 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import zatribune.spring.pps.data.entities.*;
 import zatribune.spring.pps.data.repositories.PicRepository;
 import zatribune.spring.pps.data.repositories.UserRepository;
 
-import javax.transaction.Transactional;
+
 import java.util.List;
 import java.util.Set;
 
@@ -23,11 +24,12 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
 
     @Autowired
     public DevBootstrap(UserRepository userRepository, PicRepository picRepository) {
-        log.debug(getClass().getSimpleName() + ":I'm at the Bootstrap phase.");
+        log.debug("{}:I'm at the Bootstrap phase.", getClass().getSimpleName());
         this.userRepository = userRepository;
         this.picRepository = picRepository;
     }
 
+    @Transactional
     @Override
     public void onApplicationEvent(@Nullable ContextRefreshedEvent contextRefreshedEvent) {
         clearOldData();
@@ -39,7 +41,6 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
         picRepository.deleteAll();
     }
 
-    @Transactional
     void initData() {
         log.info("initData()");
 
@@ -78,18 +79,18 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
 
         AppUser admin = new AppUser();
         admin.setUsername("admin@pps.com");
-        admin.setPassword("{pbkdf2.2018}1f1fab5f4176f86513f10136f70d4984ef97860490176f501843bb503489");//admin123
+        admin.setPassword("{pbkdf2.2018}bbf0341c6d48ab108ddd38c300922013d9430e7af8f16ba6a76e53da9b57c749fa615a98f150777fb1dbfa3a");//admin123
         admin.grantAuthority(Role.ADMIN);//user123
 
         AppUser appUser = new AppUser();
-        appUser.setUsername("muhammad.ali@pps.com");
-        appUser.setPassword("{pbkdf2.2018}5905ba87b762cad9626cbaa59777af0ef3a8bd5fdb08a4b0974cf8f5bb8f");//user123
+        appUser.setUsername("user@pps.com");
+        appUser.setPassword("{pbkdf2.2018}17418e5260c7c6392072f40825d3ac998d785cee9e42508963f5ab8e5d62307819be5450d0f7d15d18fad623");//user123
         appUser.grantAuthority(Role.USER);//user123
 
         pic1.setAppUser(appUser);
         pic2.setAppUser(appUser);
         pic3.setAppUser(appUser);
-        appUser.setPics(Set.of(pic1,pic2,pic3,pic4,pic5));
+        appUser.setPics(Set.of(pic1, pic2, pic3, pic4, pic5));
 
         //todo: we need the uploaded by
 
